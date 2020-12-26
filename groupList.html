@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <header>
+        <link rel="stylesheet" href="styles.css" >
+        <title>Cricket Tournament</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+       </header>
+    <body>
+            <h1>Cricket Tournament 2020-21</h1>
+            <div class="row" style="margin-left: 20px; ">
+                <div class="col-md-3">
+                    <h3>Team Baten</h3>
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <th>Name</th>
+                            <th>Image</th>
+                        </thead>
+                        <tbody id="teamBaten">
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-3">
+                    <h3>Team Rajib</h3>
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <th>Name</th>
+                            <th>Image</th>
+                        </thead>
+                        <tbody id="teamRajib">
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-3">
+                    <h3>Team Shahin</h3>
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <th>Name</th>
+                            <th>Image</th>
+                        </thead>
+                        <tbody id="teamShahin">
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-3">
+                    <h3>Team Rubel</h3>
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <th>Name</th>
+                            <th>Image</th>
+                        </thead>
+                        <tbody id="teamRubel">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+    </body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="playerInformation.js"></script>
+<script>
+    (function(){
+        function GetPlayers(dedicatedTeam)
+        {
+            let data = [];
+            for(let i = 0 ; i < playerInformation.length; i ++)
+            {
+                let name = playerInformation[i].name;
+                let run = playerInformation[i].run;
+                let ball = playerInformation[i].ball;
+                let wicket = playerInformation[i].wicket;
+                let over = playerInformation[i].over;
+                let imageUrl = playerInformation[i].imageUrl;
+                let dedicatedGroup = playerInformation[i].dedicatedGroup;
+                if(dedicatedGroup === dedicatedTeam)
+                {
+                    let obj = new PlayerInformation(name, run, ball, wicket, over, imageUrl, dedicatedGroup);
+                    data.push(obj);
+                }
+            }
+            return data;
+        }
+        function BuildHtml(information, groupId)
+        {
+            let html = "";
+            for( let i = 0; i < information.length; i ++ )
+            {
+                html += `<tr>
+                    <td>${information[i].name}</td>
+                    <td><img src = "${information[i].imageUrl}" width = '20' height = '20'></td>
+                </tr>`;
+            }
+            $(groupId).html(html);
+        }
+        window.onload = function(){
+            let teamBatenGroup = GetPlayers("Baten");
+            BuildHtml(teamBatenGroup, "#teamBaten");
+            
+            let teamRajibGroup = GetPlayers("Rajib");
+            BuildHtml(teamRajibGroup, "#teamRajib");
+            
+            let teamShahinGroup = GetPlayers("Shahin");
+            BuildHtml(teamShahinGroup, "#teamShahin");
+            
+            let teamRubelGroup = GetPlayers("Rubel");
+            BuildHtml(teamRubelGroup, "#teamRubel");
+        }
+    })();
+</script>

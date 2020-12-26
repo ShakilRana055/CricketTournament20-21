@@ -1,0 +1,22 @@
+h1{
+    font-weight: 900;
+    color: brown;
+    text-align: center;
+}
+
+
+table thead th {
+    text-align: center;
+    background-color: #1a8cff;
+}
+table tbody td {
+    text-align: center;
+}
+
+.winner{
+    background-color:#aaff80;
+}
+
+.looser{
+    background-color: #1affff;
+}

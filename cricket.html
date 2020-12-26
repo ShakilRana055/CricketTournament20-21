@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+    <header>
+        <link rel="stylesheet" href="styles.css" >
+        <title>Cricket Tournament</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+       </header>
+    <body>
+            <h1>Cricket Tournament 2020-21</h1>
+            <div class="row" style="margin-left: 20px; margin-right: 20px;">
+                <div class="col-md-6">
+                    <h4>Point Table</h4>
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <th>Name</th>
+                            <th>Played</th>
+                            <th>Win</th>
+                            <th>Loose</th>
+                            <th>Rating</th>
+                            <th>Point</th>
+                        </thead>
+                        <tbody id="groupInformation">
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-1">
+                    
+                </div>
+                <div class="col-md-5">
+                    <h4>Top 5 Batsman</h4>
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <th>Name</th>
+                            <th>Run</th>
+                            <th>Image</th>
+                            <th></th>
+                        </thead>
+                        <tbody id="topFiveBatsman">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+
+                </div>
+                <div class="col-md-8">
+                    <h4>Top 5 Baller</h4>
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <th>Name</th>
+                            <th>Wicket</th>
+                            <th>Image</th>
+                            <th></th>
+                        </thead>
+                        <tbody id="topFiveBaller">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-2">
+
+                </div>
+            </div>
+    </body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="playerInformation.js"></script>
+<script>
+    function Swap(i, j , information)
+    {
+        let swap = information[i];
+        information[i] = information[j];
+        information[j] = swap;
+        return information;
+    }
+    function AlphabetChecker(first, second)
+    {
+        let isOk = "none";
+        let  taken = false;
+        if(first.length >= second.length)
+        {
+            for(let i = 0; i < second.length; i ++)
+            {
+                if(second[i] > first[i] && taken === false){
+                    isOk = "second";
+                    taken = true;
+                }
+                else if(second[i] < first[i] && taken === false){
+                    isOk = "first";
+                    taken = true;
+                }
+            }
+        }
+        if(first.length < second.length)
+        {
+            for(let i = 0; i < first.length; i ++)
+            {
+                if(second[i] < first[i] && taken === false){
+                    isOk = "first";
+                    taken = true;
+                }
+                else if(second[i] > first[i] && taken === false){
+                    isOk = "second";
+                    taken = true;
+                }
+            }
+        }
+        return isOk;
+    }
+
+
+
+    (function(){
+        class GroupInformation{
+            constructor(name, played, win, loose, rating, point){
+                this.name = name;
+                this.played = played;
+                this.win = win;
+                this.loose = loose;
+                this.rating = rating;
+                this.point = point;
+            }
+        }
+        let groupInformation = [
+            {
+                "name": "Baten",
+                 "played":0,
+                 "win": 0,
+                 "loose":0,
+                 "rating":0,
+                 "point": 0,
+            },
+            {
+                "name": "Shahin",
+                 "played":0,
+                 "win": 0,
+                 "loose":0,
+                 "rating":0,
+                 "point": 0,
+            },
+            {
+                "name": "Rajib",
+                 "played":0,
+                 "win": 0,
+                 "loose":0,
+                 "rating":0,
+                 "point": 0,
+            },
+            {
+                "name": "Rubel",
+                 "played":0,
+                 "win": 0,
+                 "loose":0,
+                 "rating":0,
+                 "point": 0,
+            },
+            
+        ];
+         function BuildGroupInformation()
+        {
+            let data = [];
+            for(let i = 0; i < groupInformation.length; i ++)
+            {
+                let name = groupInformation[i].name;
+                let played = groupInformation[i].played;
+                let win = groupInformation[i].win;
+                let loose = groupInformation[i].loose;
+                let rating = (groupInformation[i].rating / 100).toFixed(2);
+                let point = groupInformation[i].point.toFixed(2);
+                let obj = new GroupInformation(name, played, win, loose, rating, point);
+                data.push(obj);
+            }
+            return data;
+        }
+         function BuildHtml(grpInformation)
+        {
+            let html = "";
+            for(let  i = 0 ; i < grpInformation.length; i ++ )
+            {
+                html += `<tr class = ${i % 2 == 0 ? "winner": "looser"}>
+                    <td>${grpInformation[i].name}</td>
+                    <td>${grpInformation[i].played}</td>
+                    <td>${grpInformation[i].win}</td>
+                    <td>${grpInformation[i].loose}</td>
+                    <td>${grpInformation[i].rating}</td>
+                    <td>${grpInformation[i].point}</td>
+                </tr>`;
+            }
+            console.log("here" + grpInformation);
+            $("#groupInformation").html(html);
+        }
+         function Sort( information )
+        {
+            for( let i = 0; i < information.length - 1; i ++ )
+            {
+                for(let j = 0; j < information.length - 1 - i; j ++ )
+                {
+                    if(information[j].point < information[j + 1].point)
+                    {
+                        Swap(j, j + 1 , information);
+                    }
+                    else if(information[j].point === information[j + 1].point
+                        && information[j].rating < information[j + 1].rating
+                    )
+                    {
+                        Swap(j, j + 1 , information);
+                    }
+                    else if(information[j].point === information[j + 1].point
+                    && information[j].rating === information[j + 1].rating)
+                    {
+                        let checker = AlphabetChecker(information[j].name, information[j + 1].name);
+                        if(checker === "first")
+                        {
+                            Swap(j , j + 1, information);
+                        }
+                    }
+                }
+            }
+            return information;
+        }
+
+         function GetPlayers()
+        {
+            let data = [];
+            for(let i = 0 ; i < playerInformation.length; i ++)
+            {
+                let name = playerInformation[i].name;
+                let run = playerInformation[i].run;
+                let ball = playerInformation[i].ball;
+                let wicket = playerInformation[i].wicket;
+                let over = playerInformation[i].over;
+                let imageUrl = playerInformation[i].imageUrl;
+                let dedicatedGroup = playerInformation[i].dedicatedGroup;
+                let obj = new PlayerInformation(name, run, ball, wicket, over, imageUrl, dedicatedGroup);
+                data.push(obj);
+            }
+            return data;
+        }
+        function SortPlayer(players)
+        {
+            for( let i = 0; i < players.length - 1; i ++ )
+            {
+                for(let j = 0; j < players.length - 1 - i; j ++ )
+                {
+                    if(players[j].run < players[j + 1].run)
+                    {
+                        Swap(j , j + 1, players);
+                    }
+                    else if(players[j].run === players[j + 1].run){
+                        let checker = AlphabetChecker(players[j].name, players[j + 1].name);
+                        if(checker === "first"){
+                            Swap(j , j + 1, players);
+                        }
+                    }
+                }
+            }
+            return players;
+        }
+        function BuildFiveBatsman(sortedBatsman){
+            let html = "";
+            for( let i = 0; i < 5; i ++ ){
+                html += `<tr style = "background-color: #d9ffb3;" >
+                    <td>${sortedBatsman[i].name}</td>
+                    <td>${sortedBatsman[i].run}</td>
+                    <td><img src = "${sortedBatsman[i].imageUrl}" height = "20" width = "20"></td>
+                    ${ i === 0 ? "<td rowspan='5'><img src = '" + sortedBatsman[i].imageUrl+"' height = '200' width = '150'></td>":''}
+                </tr>`;
+            }
+            console.log(sortedBatsman);
+            $("#topFiveBatsman").html(html);
+        }
+
+        function SortBaller(playersInfo){
+            
+            for( let i = 0; i < playersInfo.length - 1; i ++ )
+            {
+                for(let j = 0; j < playersInfo.length - 1 - i; j ++ )
+                {
+                    if(playersInfo[j].wicket < playersInfo[j + 1].wicket)
+                    {
+                        Swap(j , j + 1, playersInfo);
+                    }
+                    else if(playersInfo[j].wicket === playersInfo[j + 1].wicket){
+                        let checker = AlphabetChecker(playersInfo[j].name, playersInfo[j + 1].name);
+                        if(checker === "first"){
+                            Swap(j , j + 1, playersInfo);
+                        }
+                    }
+                }
+            }
+            
+            return playersInfo;
+        }
+        function BuildFiveBaller(sortedBaller){
+            let html = "";
+            for( let i = 0; i < 5; i ++ ){
+                html += `<tr style = "background-color: #d9ffb3;" >
+                    <td>${sortedBaller[i].name}</td>
+                    <td>${sortedBaller[i].wicket}</td>
+                    <td><img src = "${sortedBaller[i].imageUrl}" height = "20" width = "20"></td>
+                    ${ i === 0 ? "<td rowspan='5'><img src = '" + sortedBaller[i].imageUrl+"' height = '200' width = '150'></td>":''}
+                </tr>`;
+            }
+            console.log("sorted Baller" + sortedBaller);
+            $("#topFiveBaller").html(html);
+        }
+        window.onload = function(){
+            let grpInformation =  BuildGroupInformation();
+            let sortedGroup =  Sort(grpInformation);
+            BuildHtml(sortedGroup);
+            sortedGroup = [];
+
+            let players =  GetPlayers();
+            let sortedBatsman = SortPlayer(players);
+            BuildFiveBatsman(sortedBatsman);
+            
+            let getBaller = GetPlayers();
+            let sortedBaller = SortBaller(getBaller);
+            BuildFiveBaller(sortedBaller);
+            
+             
+            
+        }
+    })();
+</script>
+
+
+
